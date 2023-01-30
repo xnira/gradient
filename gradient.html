@@ -1,0 +1,64 @@
+<html>
+
+<head>
+    <title>gradient</title>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+    <script>
+    class Gradient {
+    constructor(size) {
+
+        this.size = 25;
+        this.r = new Array(size);
+
+        for (var i = 0; i < size; i++) {
+            var magenta = this.sin_to_hex(i, 0 * Math.PI * 2 / 3);
+            var purple = this.sin_to_hex(i, 1 * Math.PI * 1.7 / 3);
+            var aqua = this.sin_to_hex(i, 2 * Math.PI * 2 / 3);
+
+            this.r[i] = "#" + magenta + purple + aqua;
+        }
+
+    }
+
+    sin_to_hex(i, phase) {
+        var sin = Math.sin(Math.PI / this.size * 2 * i + phase);
+        var int = Math.floor(sin * 127) + 128;
+        var hex = int.toString(16);
+
+        return hex.length === 1 ? "0" + hex : hex;
+    }
+}
+
+
+function setup() {
+    createCanvas(500, 500);
+    gradient = new Gradient(255);
+}
+
+var i = 0;
+var gradient;
+
+function draw() {
+    background(255);
+
+    i += 0.1;
+
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+
+            noiseDetail(2, 0);
+            noiseVal = noise(x * 0.02 + i, y * 0.02);
+            stroke(gradient.r[floor(noiseVal * 250 / 2)]);
+            point(x, y);
+        }
+    }
+    fill(150,150,150,200)
+    
+}
+    </script>
+</body>
+
+</html>
